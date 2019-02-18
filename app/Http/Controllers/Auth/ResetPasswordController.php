@@ -1,39 +1,42 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace SC\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use SC\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use SC\Models\Users\User;
+use Validator;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+use Session;
 
-class ResetPasswordController extends Controller
-{
-    /*
-    |--------------------------------------------------------------------------
-    | Password Reset Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling password reset requests
-    | and uses a simple trait to include this behavior. You're free to
-    | explore this trait and override any methods you wish to tweak.
-    |
-    */
+class ResetPasswordController extends Controller {
+   use ResetsPasswords;
 
-    use ResetsPasswords;
+   public function reset(Request $request) {
+      $request->validate([
+         'token' => 'required',
+         'password' => 'required|min:6',
+      ], [], ['password' => __('formLabels.password')]);
 
-    /**
-     * Where to redirect users after resetting their password.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+      $response = $this->broker()->reset(
+         $this->credentials($request), function ($user, $password) {
+            $this->resetPassword($user, $password);
+         }
+      );
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
+      if ($response == Password::PASSWORD_RESET) {
+         Session::flash('success', __('auth.resetPasswordSuccess'));
+         return ['status' => 'ok'];
+      } else {
+         return response()->json(['status' => 'error', 'errors' => __('auth.resetPasswordfailed'), 'response' => $response], 422);
+      }
+   }
+
+   protected function credentials(Request $request) {
+      return array_merge($request->only(
+         'password', 'token'
+      ), ['password_confirmation' => $request->password]);
+   }
 }

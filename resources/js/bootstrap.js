@@ -1,34 +1,22 @@
-
+window.axios = require('axios');
 window._ = require('lodash');
+window.Vue = require('vue');
 
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
+import BootstrapVue from 'bootstrap-vue';
+import MainMixins from './mixins/main';
+import User from './core/User';
 
-try {
+/*try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
+} catch (e) {
+   console.log('bootstrap.js error', e);
+}*/
 
-    require('bootstrap');
-} catch (e) {}
-
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
-window.axios = require('axios');
-
+window.Vue.use(BootstrapVue);
+window.Vue.mixin(MainMixins);
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-/**
- * Next we will register the CSRF Token as a common header with Axios so that
- * all outgoing HTTP requests automatically have it attached. This is just
- * a simple convenience so we don't have to attach every token manually.
- */
+window.axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
 
@@ -38,13 +26,54 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
 
-// import Echo from 'laravel-echo'
+window.User = User;
+window.Auth = authData ? new User(authData) : false;
+
+window.trans = (string, args) => {
+    let value = _.get(window.i18n, string);
+
+    _.eachRight(args, (paramVal, paramKey) => {
+        value = _.replace(value, `:${paramKey}`, paramVal);
+    });
+    return value;
+};
+
+window.Event = new class {
+    constructor() {
+        this.vue = new Vue();
+    }
+
+    emit(event, data = null) {
+        this.vue.$emit(event, data);
+    }
+
+    on(event, callback) {
+        this.vue.$on(event, callback);
+    }
+};
+
+Vue.prototype.trans = window.trans;
+Vue.prototype.laroute = window.laroute;
+Vue.prototype.Event = window.Event;
+Vue.prototype.Auth = window.Auth;
+
+Vue.component('sc-form-wrap', require('./components/form/FormWrap.vue'));
+Vue.component('sc-form-group', require('./components/form/FormGroup.vue'));
+Vue.component('sc-form-group-inline', require('./components/form/FormGroupInline.vue'));
+Vue.component('sc-form-group-password', require('./components/form/FormGroupPassword.vue'));
+Vue.component('sc-form-group-radio', require('./components/form/FormGroupRadio.vue'));
+Vue.component('sc-form-group-select', require('./components/form/FormGroupSelect.vue'));
+Vue.component('sc-form-group-text', require('./components/form/FormGroupText.vue'));
+Vue.component('sc-form-group-inline-password', require('./components/form/FormGroupInlinePassword.vue'));
+Vue.component('sc-form-group-inline-radio', require('./components/form/FormGroupInlineRadio.vue'));
+Vue.component('sc-form-group-inline-select', require('./components/form/FormGroupInlineSelect.vue'));
+Vue.component('sc-form-group-inline-text', require('./components/form/FormGroupInlineText.vue'));
+Vue.component('sc-page-header', require('./components/PageHeader.vue'));
+Vue.component('sc-items-filter', require('./components/FilterItems.vue'));
+Vue.component('sc-items-table', require('./components/displayItemsInTable.vue'));
+Vue.component('sc-pagination', require('./components/pagination.vue'));
+
 
 // window.Pusher = require('pusher-js');
 

@@ -13,7 +13,10 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    // 'name' => 'StoreCreator',
+    'name' => env('APP_NAME', 'StoreCreator'),
+
+    'version' => '1.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Bucharest',
 
     /*
     |--------------------------------------------------------------------------
@@ -169,11 +172,17 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        SC\Providers\AppServiceProvider::class,
+        SC\Providers\AuthServiceProvider::class,
+        // SC\Providers\BroadcastServiceProvider::class,
+        SC\Providers\EventServiceProvider::class,
+        SC\Providers\RouteServiceProvider::class,
+
+        /*
+         * thard party services providers
+        */
+        Laratrust\LaratrustServiceProvider::class,
+        Lord\Laroute\LarouteServiceProvider::class,
 
     ],
 
@@ -207,6 +216,7 @@ return [
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,
+        'Laratrust'   => Laratrust\LaratrustFacade::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'Mail' => Illuminate\Support\Facades\Mail::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,

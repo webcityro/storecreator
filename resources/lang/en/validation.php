@@ -126,8 +126,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'password' => [
+            'strength' => 'Password must contents at least one uppercase letter, one lowercase letter and one number',
         ],
     ],
 
