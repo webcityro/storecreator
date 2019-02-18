@@ -23,7 +23,7 @@ class UserController extends Controller {
    }
 
    public function index() {
-      $users = new Filter(User::with('roles'), ['id', 'userName', 'firstName', 'lastName', 'email', 'sex', 'active'], 10);
+      $users = new Filter(new User, ['id', 'userName', 'firstName', 'lastName', 'email', 'sex', 'active'], 10, 'roles');
       return $users->get('users.index', 'users', ['roles' => Role::all()]);
    }
 

@@ -52,7 +52,6 @@ import Validator from './Validator';
          if (this.errors.any()) { reject(this.errors.errors); } else {
             this.submiting = true;
             const parsedURL = (this.url ? (url || this.url) : (typeof url === 'object' ? laroute.route(url[0], url[1]) : laroute.route(url)));
-            console.log('parsedURL', parsedURL);
             const xhr = type == 'get' ? axios.get(parsedURL) : axios[type](parsedURL, this.data());
 
             xhr.then((response) => {

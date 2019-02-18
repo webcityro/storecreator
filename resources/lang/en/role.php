@@ -16,4 +16,5 @@
    'notAllAdded' => 'The permissions ":names" couls not be added.',
    'resourceNotAdded' => 'The resource could not be created.',
    'onlyOwnerCanEditOwner' => 'Only an owner can edit the owner role.',
+   'noOfUsers' => 'Number of users',
  ];

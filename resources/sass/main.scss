@@ -1,243 +1,243 @@
 
 html, body {
-	padding: 0;
-	margin: 0;
-	height: 100%;
-	font-family: 'Open Sans', sans-serif;
-	font-size: 12px;
-	color: #666666;
-	text-rendering: optimizeLegibility;
+   padding: 0;
+   margin: 0;
+   height: 100%;
+   font-family: 'Open Sans', sans-serif;
+   font-size: 12px;
+   color: #666666;
+   text-rendering: optimizeLegibility;
 }
 
 #app {
-	min-height: 100%;
+   min-height: 100%;
 }
 
 #container {
-	position: relative;
-	width: 100%;
-	min-height: 100vh;
+   position: relative;
+   width: 100%;
+   min-height: 100vh;
 }
 
 #button-menu {
-	width: 50px;
+   width: 50px;
 }
 
 #header #rightNav #persistent-items-new .dropdown-menu,
 #header #rightNav #persistent-items-edit .dropdown-menu {
-	left: auto;
-	right: 0;
+   left: auto;
+   right: 0;
 }
 
 #header #rightNav #persistent-items-new .dropdown-menu .dropdown-item,
 #header #rightNav #persistent-items-edit .dropdown-menu .dropdown-item {
-	display: inline-flex;
-	flex-wrap: nowrap;
-	width: 100%;
+   display: inline-flex;
+   flex-wrap: nowrap;
+   width: 100%;
 }
 
 #header #rightNav #persistent-items-new .dropdown-menu .dropdown-item a.persistent-item,
 #header #rightNav #persistent-items-edit .dropdown-menu .dropdown-item a.persistent-item {
-	flex-grow: 1;
+   flex-grow: 1;
 }
 
 #header #userDropdown {
-	left: auto;
-	right: 0;
+   left: auto;
+   right: 0;
 }
 
 #header .navbar-item {
-	padding: 10px 17px 9px 17px;
-	line-height: 25px;
-	float: left;
-	display: inline-block;
-	cursor: pointer;
-	color: #6D6D6D;
-	border-right: $headerNavItmesBorder;
+   padding: 10px 17px 9px 17px;
+   line-height: 25px;
+   float: left;
+   display: inline-block;
+   cursor: pointer;
+   color: #6D6D6D;
+   border-right: $headerNavItmesBorder;
 }
 
 #column-left {
-	position: absolute;
-	padding-top: 50px;
-	top: 0px;
-	width: 50px;
-	height: 100%;
-	transition: all 0.3s;
-	background: #515151;
-	z-index: 10;
+   position: absolute;
+   padding-top: 50px;
+   top: 0px;
+   width: 50px;
+   height: 100%;
+   transition: all 0.3s;
+   background: #515151;
+   z-index: 10;
 }
 
 #column-left.active {
-	display: block;
-	width: 170px;
+   display: block;
+   width: 170px;
 }
 
 #menu {
-	margin-bottom: 25px;
+   margin-bottom: 25px;
 }
 
 #menu, #menu ul, #menu ul li {
-	padding: 0;
-	margin: 0;
-	list-style: none;
+   padding: 0;
+   margin: 0;
+   list-style: none;
 }
 
 #menu > li {
-	position: relative;
+   position: relative;
 }
 
 #menu > li:hover {
-	background: #444;
+   background: #444;
 }
 
 #menu > li > a {
-	padding-left: 13px;
-	font-size: 14px;
-	color: #c4c4c4;
-	border-bottom: 1px solid #585858;
+   padding-left: 13px;
+   font-size: 14px;
+   color: #c4c4c4;
+   border-bottom: 1px solid #585858;
 }
 
 #menu > li > a:hover {
-	color: #ddd;
+   color: #ddd;
 }
 
 #menu li a {
-	display: block;
-	padding: 10px;
-	text-decoration: none;
-	cursor: pointer;
-	border-bottom: 1px solid #515151;
+   display: block;
+   padding: 10px;
+   text-decoration: none;
+   cursor: pointer;
+   border-bottom: 1px solid #515151;
 }
 
 #column-left.active #menu li i {
-	font-size: 14px;
+   font-size: 14px;
 }
 
 #menu li a i {
-	font-size: 16px;
+   font-size: 16px;
 }
 
 #column-left.active #menu > li > a > span {
-	display: inline;
+   display: inline;
 }
 
 #menu > li > a > span {
-	display: none;
-	margin-left: 8px;
+   display: none;
+   margin-left: 8px;
 }
 
 #menu li ul {
-	background: #444;
+   background: #444;
 }
 
 #menu li ul a {
-	padding-left: 20px;
+   padding-left: 20px;
 }
 
 #menu li li a {
-	color: #9d9d9d;
+   color: #9d9d9d;
 }
 
 #menu li li:hover {
-	background: #444;
+   background: #444;
 }
 
 #menu li li a:hover {
-	color: #ddd;
+   color: #ddd;
 }
 
 #menu li li a:before {
-	margin: 0 10px;
-	font-size: 14px;
-	font-family: 'Font Awesome 5 Free';
-	font-weight: 900;
-	transition: margin ease 0.5s;
-	content: "\f101";
+   margin: 0 10px;
+   font-size: 14px;
+   font-family: 'Font Awesome 5 Free';
+   font-weight: 900;
+   transition: margin ease 0.5s;
+   content: "\f101";
 }
 
 #column-left:not(.active) #menu > li > ul {
-	position: absolute;
-	top: 0px;
-	left: 50px;
-	width: 150px;
-	visibility: hidden;
+   position: absolute;
+   top: 0px;
+   left: 50px;
+   width: 150px;
+   visibility: hidden;
 }
 
 #column-left:not(.active) #menu > li:hover > ul {
-	display: block;
-	visibility: unset;
+   display: block;
+   visibility: unset;
 }
 
 #content {
-	padding-bottom: 40px;
-	min-height: calc(100vh - 125px);
-	transition: all 0.3s;
+   padding-bottom: 40px;
+   min-height: calc(100vh - 125px);
+   transition: all 0.3s;
 }
 
 #column-left + #content {
-	margin-left: 50px;
+   margin-left: 50px;
 }
 
 #column-left + #content + #footer {
-	margin-left: 50px;
+   margin-left: 50px;
 }
 
 .page-header {
-	padding: 0;
-	margin: 15px 0;
-	vertical-align: middle;
-	border-bottom: none;
+   padding: 0;
+   margin: 15px 0;
+   vertical-align: middle;
+   border-bottom: none;
 }
 
 .page-header h1 {
-	display: inline-block;
-	margin-bottom: 15px;
-	font: 'Open Sans', sans-serif 30px 400;
-	color: #848484;
+   display: inline-block;
+   margin-bottom: 15px;
+   font: 'Open Sans', sans-serif 30px 400;
+   color: #848484;
 }
 
 .breadcrumb {
-	display: inline-block;
-	padding: 0 10px;
-	margin: 0;
-	background: none;
+   display: inline-block;
+   padding: 0 10px;
+   margin: 0;
+   background: none;
 }
 
 .breadcrumb > li {
-	display: inline-block;
+   display: inline-block;
 }
 
 .breadcrumb li a {
-	padding: 0px;
-	margin: 0px;
-	font-size: 11px;
-	color: #999999;
+   padding: 0px;
+   margin: 0px;
+   font-size: 11px;
+   color: #999999;
 }
 
 #footer {
-	padding: 0 10px;
-	height: 50px;
-	text-align: center;
+   padding: 0 10px;
+   height: 50px;
+   text-align: center;
 }
 
 .prtsistentDataIcon {
-	margin-bottom: 0;
+   margin-bottom: 0;
 }
 
 @media (min-width: 768px) {
-	#column-left.active {
-		overflow: auto;
-	}
+   #column-left.active {
+      overflow: auto;
+   }
 
-	#column-left.active + #content {
-		margin-left: 170px;
-	}
+   #column-left.active + #content {
+      margin-left: 170px;
+   }
 
-	#column-left + #footer {
-		margin-left: 0px;
-	}
+   #column-left + #footer {
+      margin-left: 0px;
+   }
 
-	#column-left + #content + #footer {
-		margin-left: 0px;
-	}
+   #column-left + #content + #footer {
+      margin-left: 0px;
+   }
 }

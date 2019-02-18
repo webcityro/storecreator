@@ -52574,7 +52574,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
          postFields: { id: '' },
          form: null,
          currentField: '',
-         watchers: {}
+         pivots: {}
       };
    },
    created: function created() {
@@ -52582,12 +52582,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
       for (var field in this.fields) {
          this.postFields[field] = '';
+
+         if (typeof this.fields[field].pivot === 'string') {
+            this.pivots[field] = this.fields[field].pivot;
+         }
       }
 
       this.form = new Form(_extends({}, this.postFields, {
          sortBy: '',
          sortDir: '',
-         paginate: 10
+         paginate: 10,
+         pivots: JSON.stringify(this.pivots)
       }));
 
       this.form.url = this.url;
@@ -52616,7 +52621,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
       this.Event.on('scItemsPerPage', function (itemsPerPage) {
          _this.form.paginate = itemsPerPage;
-         // this.search();
       });
 
       this.Event.on('scPaginationChanged', function (page) {
@@ -53725,7 +53729,6 @@ var Form = function () {
             } else {
                _this.submiting = true;
                var parsedURL = _this.url ? url || _this.url : (typeof url === 'undefined' ? 'undefined' : _typeof(url)) === 'object' ? laroute.route(url[0], url[1]) : laroute.route(url);
-               console.log('parsedURL', parsedURL);
                var xhr = type == 'get' ? axios.get(parsedURL) : axios[type](parsedURL, _this.data());
 
                xhr.then(function (response) {

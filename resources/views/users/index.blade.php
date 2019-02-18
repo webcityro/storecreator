@@ -24,6 +24,16 @@
          firstName: '@lang('formLabels.firstName')',
          lastName: '@lang('formLabels.lastName')',
          email: '@lang('formLabels.email')',
+         roles: {
+            label: '@lang('role.title')',
+            type: 'select',
+            options: {
+               @foreach ($roles as $key => $role)
+                  {{ $role->id.': \''.$role->display_name.'\''.($key != count($roles) - 1 ? ',' : '') }}
+               @endforeach
+            },
+            pivot: 'id'
+         },
          sex: {
             label: '@lang('formLabels.sex')',
             type: 'select',

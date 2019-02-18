@@ -5,18 +5,15 @@ namespace SC\Libs;
 class Filter {
    protected $model;
 
-   function __construct($model, $collumns, $resultsPerPage) {
+   function __construct($model, $collumns, $resultsPerPage, $pivots = false) {
       $this->model = $model;
+      $this->pivots($pivots);
 
       $resultsPerPage = request()->has('paginate') ? request()->input('paginate') : $resultsPerPage;
 
       foreach ($collumns as $coll) {
          if (request()->has($coll)) {
-            if ($this->aplyPivotIfExists($coll)) {
-               continue;
-            }
-
-            if ($coll == 'id' || substr($coll, -2) == 'ID' || substr($coll, -3) == '_id') {
+            if ($this->isColID($coll)) {
                $this->model = $this->model->where($coll, request()->input($coll));
                continue;
             }
@@ -60,22 +57,26 @@ class Filter {
       return view($view)->with(array_merge([$key => $this->model], $viewVars));
    }
 
-   private function aplyPivotIfExists($coll) {
-      if (strpos($coll, '|')) {
-         $pivot = explode('|', $coll);
-         $newColl = $pivot[0];
-         $pivot = explode(':', $pivot[1]);
-         $modelName = '\\SC\\Models\\'.$pivot[0];
-         $model = new $modelName();
-         $idsArr = [];
+   private function pivots($pivots) {
+      if (!$pivots) { return; }
 
-         $model = $model->where($pivot[1], 'LIKE', '%'.request()->input($coll).'%');
-         foreach ($model->get() as $m) {
-            $idsArr[] = $m->id;
+      $pivots = is_array($pivots) ? $pivots : [$pivots];
+      $pivotsArr = json_decode(request()->pivots, true);
+
+      foreach ($pivots as $pivot) {
+         $this->model = $this->model->with($pivot);
+
+         if (!empty($pivotsArr) && in_array($pivot, array_keys($pivotsArr)) && request()->has($pivot)) {
+            $col = $pivotsArr[$pivot];
+
+            $this->model = $this->model->whereHas($pivot, function ($query) use($col, $pivot) {
+               $query->where($col, $this->isColID($col) ? '=' : 'like', $this->isColID($col) ? request()->input($pivot) : '%'.request()->input($pivot).'%');
+            });
          }
-         $this->model = $this->model->whereIn($newColl, $idsArr);
-         return true;
       }
-      return false;
+   }
+
+   private function isColID($col) {
+      return $col == 'id' || substr($col, -2) == 'ID' || substr($col, -3) == '_id';
    }
 }

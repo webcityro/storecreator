@@ -104,20 +104,25 @@
             postFields: { id: '' },
             form: null,
             currentField: '',
-            watchers: {}
+            pivots: {}
          }
       },
 
       created() {
          for (let field in this.fields) {
             this.postFields[field] = '';
+
+            if (typeof this.fields[field].pivot === 'string') {
+               this.pivots[field] = this.fields[field].pivot;
+            }
          }
 
          this.form = new Form({
             ...this.postFields,
             sortBy: '',
             sortDir: '',
-            paginate: 10
+            paginate: 10,
+            pivots: JSON.stringify(this.pivots)
          });
 
          this.form.url = this.url;
@@ -142,7 +147,6 @@
 
          this.Event.on('scItemsPerPage', itemsPerPage => {
             this.form.paginate = itemsPerPage;
-            // this.search();
          });
 
          this.Event.on('scPaginationChanged', page => {

@@ -16,7 +16,7 @@ class RolesController extends Controller {
    }
 
    public function index() {
-      $roles = new Filter(Role::with('permissions'), ['id', 'name', 'display_name'], 10);
+      $roles = new Filter(new Role, ['id', 'name', 'display_name'], 10, ['permissions', 'users']);
       return $roles->get('users.roles.index', 'roles', ['permissions' => Permission::all()]);
    }
 

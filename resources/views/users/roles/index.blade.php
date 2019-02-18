@@ -23,15 +23,29 @@
 
       <sc-items-filter :fields="{
          display_name: '@lang('formLabels.displayName')',
-         name: '@lang('formLabels.slug')'
+         name: '@lang('formLabels.slug')',
+         permissions: {
+            label: '@lang('permission.title')',
+            type: 'select',
+            options: {
+               @foreach ($permissions as $key => $permission)
+                  {{ $permission->id.': \''.$permission->display_name.'\''.($key != count($permissions) - 1 ? ',' : '') }}
+               @endforeach
+            },
+            pivot: 'id'
+         }
       }"></sc-items-filter>
 
       <b-container>
          <sc-items-table :columns="{
             display_name: '@lang('formLabels.displayName')',
             name: '@lang('formLabels.slug')',
-            description: '@lang('formLabels.description')'
+            description: '@lang('formLabels.description')',
+            noOfUsers: '@lang('role.noOfUsers')'
          }" :items='{!! $roles->toJson() !!}' noresoults="@lang('role.notFound')">
+            <template slot="noOfUsers" slot-scope="{ row }">
+               @{{ row.item.users.length }}
+            </template>
             <template slot="actions" slot-scope="{ row }">
                <a href="#" class="btn btn-default" :title="trans('role.viewRole', {role: row.item.display_name})" @click.prevent="roleRow = row; $refs.viewRoleModal.show();">
                   <i class="fas fa-eye"></i>
