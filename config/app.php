@@ -170,6 +170,13 @@ return [
          */
 
         /*
+        * My own service providers
+        */
+
+        SC\Providers\SettingsServiceProvider::class,
+        SC\Providers\ObserverServiceProvider::class,
+
+        /*
          * Application Service Providers...
          */
         SC\Providers\AppServiceProvider::class,
@@ -183,7 +190,6 @@ return [
         */
         Laratrust\LaratrustServiceProvider::class,
         Lord\Laroute\LarouteServiceProvider::class,
-
     ],
 
     /*

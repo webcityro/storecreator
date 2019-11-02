@@ -1,7 +1,5 @@
 require('./bootstrap');
 
-import Errors from './core/Errors';
-import Form from './core/Form';
+import Form from './core/form/Form';
 
-window.Errors = Errors;
 window.Form = Form;

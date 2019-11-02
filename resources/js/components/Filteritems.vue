@@ -5,22 +5,22 @@
          <b-card @input="currentField = $event.target.id">
             <b-row>
                <b-col>
-                  <label for="id">{{ trans('generic.id') }}</label>
+                  <label for="filter_id">{{ trans('generic.id') }}</label>
                </b-col>
                <b-col v-for="(label, field) in fields" :key="'label_'+field">
-                  <label :for="field">{{ label.label || label }}</label>
+                  <label :for="'filter_'+field">{{ label.label || label }}</label>
                </b-col>
             </b-row>
             <b-row>
                <b-col :key="'input_id'">
-                  <i class="fas fa-spinner loadingField" v-if="form.submiting && currentField == 'id'"></i>
-                  <input type="text" id="id" class="form-control" v-model="form.id">
+                  <i class="fas fa-spinner loadingField" v-if="form.submitting && currentField == 'id'"></i>
+                  <input type="text" id="filter_id" class="form-control" v-model="form.id">
                </b-col>
                <b-col v-for="(value, field) in fields" :key="'input_'+field">
-                  <i class="fas fa-spinner loadingField" v-if="form.submiting && currentField == field && typeof value === 'string'"></i>
-                  <i class="fas fa-spinner loadingField" v-if="form.submiting && currentField == field && typeof value === 'object'" style="margin-right: 2rem"></i>
-                  <input type="text" v-if="typeof value === 'string'" :id="field" class="form-control" v-model="form[field]">
-                  <select v-else-if="value.type === 'select'" :id="field" class="form-control" v-model="form[field]">
+                  <i class="fas fa-spinner loadingField" v-if="form.submitting && currentField == field && typeof value === 'string'"></i>
+                  <i class="fas fa-spinner loadingField" v-if="form.submitting && currentField == field && typeof value === 'object'" style="margin-right: 2rem"></i>
+                  <input type="text" v-if="typeof value === 'string'" :id="'filter_'+field" class="form-control" v-model="form[field]">
+                  <select v-else-if="value.type === 'select'" :id="'filter_'+field" class="form-control" v-model="form[field]">
                      <option></option>
                      <option v-for="(label, key) in value.options" :value="key">{{ label }}</option>
                   </select>
@@ -31,33 +31,33 @@
 
             <b-row>
                <b-col>
-                  <label for="sortBy">{{ trans('formLabels.sortBy') }}</label>
-                  <i class="fas fa-spinner loadingField" v-if="form.submiting && currentField == 'sortBy'" style="margin-right: 2rem"></i>
-                  <select id="sortBy" class="form-control" v-model="form.sortBy">
+                  <label for="filter_sortBy">{{ trans('formLabels.sortBy') }}</label>
+                  <i class="fas fa-spinner loadingField" v-if="form.submitting && currentField == 'sortBy'" style="margin-right: 2rem"></i>
+                  <select id="filter_sortBy" class="form-control" v-model="form.sortBy">
                      <option></option>
                      <option value="id">{{ trans('generic.id') }}</option>
                      <option v-for="(label, field) in fields" :key="'sortBy_'+field" :value="field">{{ label.label || label }}</option>
                   </select>
                   <div class="form-check form-check-inline">
-                     <input class="form-check-input" type="radio" id="sortDirAsc" name="sortDir" value="ASC"  v-model="form.sortDir">
-                     <label class="form-check-label" for="sortDirAsc">{{ trans('formLabels.sortAsc') }}</label>
+                     <input class="form-check-input" type="radio" id="filter_sortDirAsc" name="sortDir" value="ASC"  v-model="form.sortDir">
+                     <label class="form-check-label" for="filter_sortDirAsc">{{ trans('formLabels.sortAsc') }}</label>
                   </div>
                   <div class="form-check form-check-inline">
-                     <input class="form-check-input" type="radio" id="sortDirDesc" name="sortDir" value="DESC"  v-model="form.sortDir">
-                     <label class="form-check-label" for="sortDirDesc">{{ trans('formLabels.sortDesc') }}</label>
+                     <input class="form-check-input" type="radio" id="filter_sortDirDesc" name="sortDir" value="DESC"  v-model="form.sortDir">
+                     <label class="form-check-label" for="filter_sortDirDesc">{{ trans('formLabels.sortDesc') }}</label>
                   </div>
-                  <i class="fas fa-spinner ml-2" v-if="form.submiting && (currentField == 'sortDirAsc' || currentField == 'sortDirDesc')"></i>
+                  <i class="fas fa-spinner ml-2" v-if="form.submitting && (currentField == 'sortDirAsc' || currentField == 'sortDirDesc')"></i>
                </b-col>
 
                <b-col>
-                  <label for="perPage">{{ trans('formLabels.perPage') }}</label>
-                  <i class="fas fa-spinner loadingField" v-if="form.submiting && currentField == 'perPage'" style="margin-right: 2rem"></i>
-                  <input type="number" id="perPage" class="form-control" v-model="form.paginate">
+                  <label for="filter_perPage">{{ trans('formLabels.perPage') }}</label>
+                  <i class="fas fa-spinner loadingField" v-if="form.submitting && currentField == 'perPage'" style="margin-right: 2rem"></i>
+                  <input type="number" id="filter_perPage" class="form-control" v-model="form.paginate">
                </b-col>
             </b-row>
             <b-row>
                <b-col class="text-right">
-                  <i class="fas fa-spinner" v-if="form.submiting && currentField == ''"></i>&nbsp;&nbsp;
+                  <i class="fas fa-spinner" v-if="form.submitting && currentField == ''"></i>&nbsp;&nbsp;
                   <a href="#" @click.prevent="clear()">{{ trans('generic.clearFilters') }}</a>
                </b-col>
             </b-row>

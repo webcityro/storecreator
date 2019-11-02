@@ -20,7 +20,11 @@
 </style>
 
 <script>
+    import { mapActions, mapGetters } from 'vuex';
+
     export default {
+        store,
+
         props: {
             columns: { required: true, type: Object },
             items: { required: true, type: Object },
@@ -86,6 +90,13 @@
             window.addEventListener("load", event => {
                 this.Event.emit('scPaginate', this.items);
             });
+        },
+
+        computed: {
+            ...mapGetters({
+                authChech: 'auth/check',
+                auth: 'auth/user'
+            })
         }
     }
 </script>

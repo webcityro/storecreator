@@ -2,9 +2,10 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/main.js": "/js/main.js",
+    "/js/system/stores.js": "/js/system/stores.js",
     "/js/users/auth.js": "/js/users/auth.js",
     "/js/users/index.js": "/js/users/index.js",
-    "/js/users/profile.js": "/js/users/profile.js",
     "/js/users/permissions/index.js": "/js/users/permissions/index.js",
+    "/js/users/profile.js": "/js/users/profile.js",
     "/js/users/roles/index.js": "/js/users/roles/index.js"
 }

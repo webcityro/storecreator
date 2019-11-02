@@ -6,26 +6,22 @@
    height: 50px;
    border-bottom: 1px solid #e5e5e5;
    background: #fff;
-}
 
-#header .navbar-header {
-   padding: 0;
-}
+   .navbar-header {
+      padding: 0;
+   }
 
-#header .navbar-brand {
-   width: 120px;
-   text-align: center;
-}
+   .navbar-brand {
+      width: 120px;
+      text-align: center;
+   }
 
-#header .authDropdown {
-   border-left: $headerNavItmesBorder;
-}
-
-#header .authDropdown .dropdown-menu {
-   left: -1px;
-   right: 0;
-   margin-top: -1px;
-   min-width: 100%;
+   .authDropdown .dropdown-menu {
+      left: -1px;
+      right: 0;
+      margin-top: -1px;
+      min-width: 100%;
+   }
 }
 
 span.help-block:empty {
@@ -127,6 +123,7 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
 }
 
 .form-group label {
+   display: inline;
    font-size: 1.2rem;
 }
 

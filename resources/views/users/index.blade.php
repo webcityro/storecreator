@@ -34,6 +34,16 @@
             },
             pivot: 'id'
          },
+         stores: {
+            label: '@lang('generic.store')',
+            type: 'select',
+            options: {
+               @foreach ($stores as $key => $store)
+                  {{ $store->id.': \''.$store->name.'\''.($key != count($stores) - 1 ? ',' : '') }}
+               @endforeach
+            },
+            pivot: 'id'
+         },
          sex: {
             label: '@lang('formLabels.sex')',
             type: 'select',
@@ -59,6 +69,7 @@
             lastName: '@lang('formLabels.lastName')',
             email: '@lang('formLabels.email')',
             roles: '@lang('role.title')',
+            stores: '@lang('generic.store')',
             sex: '@lang('formLabels.sex')'
          }" :items='{!! $users->toJson() !!}' noresoults="@lang('user.userNotFound')">
             <template slot="userName" slot-scope="{ row }">
@@ -73,6 +84,9 @@
             <template slot="roles" slot-scope="{ row }">
                <span v-for="(role, key) in row.value">@{{ role.display_name+(key < row.value.length - 1 ? ' / ' : '') }}</span>
             </template>
+            <template slot="stores" slot-scope="{ row }">
+               <span v-for="(store, key) in row.value">@{{ store.name+(key < row.value.length - 1 ? ' / ' : '') }}</span>
+            </template>
             <template slot="sex" slot-scope="{ row }">@{{ row.value | displaySex }}</template>
             <template slot="actions" slot-scope="{ row }">
                <b-btn v-b-modal="'viewUserModal'" @click="userRow = row" variant="default" :title="trans('user.viewUsersInfo', {username: row.item.displayName})">
@@ -84,7 +98,7 @@
                   </a>
                @endpermission
                @permission('delete-users')
-                  <b-btn v-if="(!isOwner(row.item) || Auth.hasRole('owner')) && row.item.id != Auth.data.id" v-b-modal="'deleteUserModal'" class="btn btn-danger" title="@lang('generic.delete')" @click="userRow = row">
+                  <b-btn v-if="(!isOwner(row.item) || auth.hasRole('owner')) && row.item.id != auth.data.id" v-b-modal="'deleteUserModal'" class="btn btn-danger" title="@lang('generic.delete')" @click="userRow = row">
                      <i class="fas fa-trash-alt"></i>
                   </b-btn>
                @endpermission
@@ -99,37 +113,46 @@
       @permission('create-users|update-users')
          <b-modal id="userFormModal" ref="userFormModal" :title="userFormTitle" no-close-on-esc no-close-on-backdrop hide-header-close size="lg">
             <div class="container">
-               <sc-form-group id="user_firstName" label="{{ __('formLabels.firstName') }}" v-model="form.firstName" :error="form.errors" :required="true"></sc-form-group>
-               <sc-form-group id="user_lastName" label="{{ __('formLabels.lastName') }}" v-model="form.lastName" :error="form.errors" :required="true"></sc-form-group>
-               <sc-form-group id="user_userName" label="{{ __('formLabels.userName') }}" v-model="form.userName" :error="form.errors" :required="!userRow" :disabled="userRow !== null"></sc-form-group>
-               <sc-form-group-radio id="user_sex" label="{{ __('formLabels.sex') }}" :options="{ male: '{{ __('formLabels.sexMale') }}', female: '{{ __('formLabels.sexFemale') }}' }" v-model="form.sex" :error="form.errors" :required="true" :inline="true"></sc-form-group-radio>
-               <sc-form-group id="user_email" type="email" label="{{ __('formLabels.email') }}" v-model="form.email" :error="form.errors" :required="true"></sc-form-group>
-               <sc-form-group-password id="password" label="{{ __('formLabels.password') }}" v-model="form.password" :error="form.errors" :hide-default="form.passwordType != 'change' && form.passwordType != 'set'">
-                  <template slot="append">
-                     <b-form-radio-group v-model="form.passwordType"
-                        :options="passwordOptions"
-                        stacked
-                        name="passwordType"></b-form-radio-group>
-                  </template>
-               </sc-form-group-password>
-               <sc-form-group-select id="status" label="{{ __('generic.status') }}" :options="{ 1: '{{ __('generic.active') }}', 0: '{{ __('generic.inactive') }}' }" v-model="form.status" :error="form.errors" :required="true" inline="true"></sc-form-group-select>
-               <sc-form-group id="roles" label="{{ __('role.title') }}" :error="form.errors">
-                  <b-form-checkbox-group v-model="form.roles">
-                     <b-row>
-                        @foreach ($roles as $role)
-                           @if (Auth::user()->hasRole('owner') || $role->name != 'owner')
-                              <b-col sm="12" md="4">
-                                 <b-form-checkbox value="{{ $role->id }}">{{ $role->display_name }}</b-form-checkbox>
-                              </b-col>
-                           @endif
-                        @endforeach
-                     </b-row>
-                  </b-form-checkbox-group>
-               </sc-form-group>
+               <b-tabs>
+                  <b-tab title="@lang('generic.detalies')">
+                     <sc-form-group id="firstName" label="{{ __('formLabels.firstName') }}" v-model="form.firstName" :error="form.errors" required></sc-form-group>
+                     <sc-form-group id="lastName" label="{{ __('formLabels.lastName') }}" v-model="form.lastName" :error="form.errors" required></sc-form-group>
+                     <sc-form-group id="userName" label="{{ __('formLabels.userName') }}" v-model="form.userName" :error="form.errors" :required="!userRow" :disabled="userRow !== null"></sc-form-group>
+                     <sc-form-group-radio id="sex" label="{{ __('formLabels.sex') }}" :options="{ male: '{{ __('formLabels.sexMale') }}', female: '{{ __('formLabels.sexFemale') }}' }" v-model="form.sex" :error="form.errors" required></sc-form-group-radio>
+                     <sc-form-group id="email" type="email" label="{{ __('formLabels.email') }}" v-model="form.email" :error="form.errors" required></sc-form-group>
+                     <sc-form-group-password id="password" label="{{ __('formLabels.password') }}" v-model="form.password" :error="form.errors" :hide-default="form.passwordType != 'change' && form.passwordType != 'set'">
+                        <template slot="append">
+                           <b-form-radio-group v-model="form.passwordType"
+                              :options="passwordOptions"
+                              stacked
+                              name="passwordType"></b-form-radio-group>
+                        </template>
+                     </sc-form-group-password>
+                     <sc-form-group-select id="status" label="{{ __('generic.status') }}" :options="{ 1: '{{ __('generic.active') }}', 0: '{{ __('generic.inactive') }}' }" v-model="form.status" :error="form.errors" required inline></sc-form-group-select>
+                  </b-tab>
+                  <b-tab title="@lang('role.title')">
+                     <sc-form-group id="roles" label="{{ __('role.title') }}" :error="form.errors">
+                        <b-form-checkbox-group v-model="form.roles">
+                           <b-row>
+                              @foreach ($roles as $role)
+                                 @if (Auth::user()->hasRole('owner') || $role->name != 'owner')
+                                    <b-col sm="12" md="4">
+                                       <b-form-checkbox value="{{ $role->id }}">{{ $role->display_name }}</b-form-checkbox>
+                                    </b-col>
+                                 @endif
+                              @endforeach
+                           </b-row>
+                        </b-form-checkbox-group>
+                     </sc-form-group>
+                  </b-tab>
+                  <b-tab title="@lang('generic.stores')">
+                     <sc-form-group-stores id="stores" label="{{ __('generic.stores') }}" v-model="form.stores" :error="form.errors" required></sc-form-group-stores>
+                  </b-tab>
+               </b-tabs>
             </div>
             <template slot="modal-footer">
-               <button type="button" class="btn btn-primary" @click.prevent="userRow ? update() : add()" :disabled="form.submiting">
-                  <i :class="form.submiting ? 'fas fa-spinner' : 'fa fa-save'"></i> @lang('generic.save')
+               <button type="button" class="btn btn-primary" @click.prevent="userRow ? update() : add()" :disabled="form.submitting">
+                  <i :class="form.submitting ? 'fas fa-spinner' : 'fa fa-save'"></i> @lang('generic.save')
                </button>
                <button type="button" class="btn btn-default" data-dismiss="modal" @click.prevent="cancel">
                   <i class="fa fa-reply"></i> @lang('generic.cancel')
@@ -169,6 +192,13 @@
                </li>
             </ul>
             <p v-else>@lang('user.hasNoRores')</p>
+            <h3>@lang('generic.stores')</h3>
+            <hr>
+            <ul>
+               <li v-for="store in userRow.item.stores">
+                  <strong>@{{ store.name }}</strong>
+               </li>
+            </ul>
          </b-container>
          <template slot="modal-footer">
             <b-btn variant="primary" @click="userRow = null; $refs.viewUserModal.hide();">
@@ -183,10 +213,10 @@
                <p class="lead">@{{ deleteUserMsg }}</p>
             </div>
             <template slot="modal-footer">
-               <button type="button" class="btn btn-danger" @click.prevent="deleteUser()" :disabled="form.submiting">
-                  <i :class="form.submiting ? 'fas fa-spinner' : 'fa fa-trash-alt'"></i> @lang('generic.delete')
+               <button type="button" class="btn btn-danger" @click.prevent="deleteUser()" :disabled="form.submitting">
+                  <i :class="form.submitting ? 'fas fa-spinner' : 'fa fa-trash-alt'"></i> @lang('generic.delete')
                </button>
-               <button type="button" class="btn btn-default" data-dismiss="modal" @click.prevent="userRow = null">
+               <button type="button" class="btn btn-default" @click.prevent="userRow = null; $refs.deleteUserModal.hide();">
                   <i class="fa fa-reply"></i> @lang('generic.cancel')
                </button>
             </template>
