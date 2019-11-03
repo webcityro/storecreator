@@ -1,15 +1,18 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
-import savedState from './modules/savedState';
-import auth from './modules/auth';
-import stores from './modules/stores';
+import modules from './modules';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-   modules: {
-      savedState,
-      auth,
-      stores
-   }
+const store = new Vuex.Store({
+    strict: true,
+    modules
 });
+
+const actionsToDispatch = [];
+
+for (const action of actionsToDispatch) {
+    store.dispatch(action);
+}
+
+export default store;

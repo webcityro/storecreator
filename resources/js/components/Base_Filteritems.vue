@@ -22,12 +22,12 @@
                   <input type="text" v-if="typeof value === 'string'" :id="'filter_'+field" class="form-control" v-model="form[field]">
                   <select v-else-if="value.type === 'select'" :id="'filter_'+field" class="form-control" v-model="form[field]">
                      <option></option>
-                     <option v-for="(label, key) in value.options" :value="key">{{ label }}</option>
+                     <option v-for="(label, key) in value.options" :key="key" :value="key">{{ label }}</option>
                   </select>
                </b-col>
             </b-row>
 
-            <b-row><b-col><hr></b-col></b-row></b-row>
+            <b-row><b-col><hr></b-col></b-row>
 
             <b-row>
                <b-col>
