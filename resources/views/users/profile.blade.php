@@ -92,14 +92,14 @@
       @if ($isMyProfile)
          <b-modal id="editProfileModal" ref="editProfileModal" title="@lang('user.editYourProfile')" no-close-on-esc no-close-on-backdrop hide-header-close>
             <div class="container">
-               <sc-form-group id="firstName" label="{{ __('formLabels.firstName') }}" v-model="profileForm.firstName" :error="profileForm.errors" :required="true"></sc-form-group>
-               <sc-form-group id="lastName" label="{{ __('formLabels.lastName') }}" v-model="profileForm.lastName" :error="profileForm.errors" :required="true"></sc-form-group>
-               <sc-form-group-radio id="sex" label="{{ __('formLabels.sex') }}" :options="{ male: '{{ __('formLabels.sexMale') }}', female: '{{ __('formLabels.sexFemale') }}' }" v-model="profileForm.sex" :error="profileForm.errors" :required="true" inline="true"></sc-form-group-radio>
-               <sc-form-group id="email" type="email" label="{{ __('formLabels.email') }}" v-model="profileForm.email" :error="profileForm.errors" :required="true"></sc-form-group>
+               <sc-form-group id="firstName" label="{{ __('formLabels.firstName') }}" v-model="profileForm.firstName" :error="profileForm.errors" required></sc-form-group>
+               <sc-form-group id="lastName" label="{{ __('formLabels.lastName') }}" v-model="profileForm.lastName" :error="profileForm.errors" required></sc-form-group>
+               <sc-form-group-radio id="sex" label="{{ __('formLabels.sex') }}" :options="{ male: '{{ __('formLabels.sexMale') }}', female: '{{ __('formLabels.sexFemale') }}' }" v-model="profileForm.sex" :error="profileForm.errors" required inline></sc-form-group-radio>
+               <sc-form-group id="email" type="email" label="{{ __('formLabels.email') }}" v-model="profileForm.email" :error="profileForm.errors" required></sc-form-group>
             </div>
             <template slot="modal-footer">
-               <button type="button" class="btn btn-primary" @click.prevent="saveProfile" :disabled="profileForm.submiting">
-                  <i :class="profileForm.submiting ? 'fas fa-spinner' : 'fa fa-save'"></i> @lang('generic.save')
+               <button type="button" class="btn btn-primary" @click.prevent="saveProfile" :disabled="profileForm.submitting">
+                  <i :class="profileForm.submitting ? 'fas fa-spinner' : 'fa fa-save'"></i> @lang('generic.save')
                </button>
                <button type="button" class="btn btn-default" data-dismiss="modal" @click.prevent="cancelProfile">
                   <i class="fa fa-reply"></i> @lang('generic.cancel')
@@ -109,14 +109,14 @@
 
          <b-modal id="changePasswordModal" ref="changePasswordModal" title="@lang('user.chandeYourPassword')" no-close-on-esc no-close-on-backdrop hide-header-close>
             <div class="container">
-               <sc-form-group-password id="currentPassword" label="{{ __('formLabels.currentPassword') }}" v-model="passwordForm.currentPassword" :error="passwordForm.errors" :required="true"></sc-form-group-password>
-               <sc-form-group-password id="newPassword" label="{{ __('formLabels.newPassword') }}" v-model="passwordForm.newPassword" :error="passwordForm.errors" :required="true"></sc-form-group-password>
+               <sc-form-group-password id="currentPassword" label="{{ __('formLabels.currentPassword') }}" v-model="passwordForm.currentPassword" :error="passwordForm.errors" required></sc-form-group-password>
+               <sc-form-group-password id="newPassword" label="{{ __('formLabels.newPassword') }}" v-model="passwordForm.newPassword" :error="passwordForm.errors" required></sc-form-group-password>
             </div>
             <template slot="modal-footer">
-               <button type="button" class="btn btn-primary" @click.prevent="savePassword" :disabled="passwordForm.submiting">
-                  <i :class="passwordForm.submiting ? 'fas fa-spinner' : 'fa fa-save'"></i> @lang('generic.save')
+               <button type="button" class="btn btn-primary" @click.prevent="savePassword" :disabled="passwordForm.submitting">
+                  <i :class="passwordForm.submitting ? 'fas fa-spinner' : 'fa fa-save'"></i> @lang('generic.save')
                </button>
-               <button type="button" class="btn btn-default" data-dismiss="modal" @click.prevent="cancelProfile">
+               <button type="button" class="btn btn-default" data-dismiss="modal" @click.prevent="cancelPassword">
                   <i class="fa fa-reply"></i> @lang('generic.cancel')
                </button>
             </template>

@@ -27,8 +27,8 @@
             <b-form-checkbox id="rememberMe" v-model="loginForm.rememberMe" value="true">@lang('auth.rememberMe')</b-form-checkbox>
          </div>
          <div class="form-group">
-            <b-button size="lg" variant="primary" class="btn-block" @click.prevent="submitLogin" :disabled="loginForm.submiting">
-               <i :class="loginForm.submiting ? 'fas fa-spinner' : 'fas fa-check'" ></i>&nbsp;&nbsp;
+            <b-button size="lg" variant="primary" class="btn-block" @click.prevent="submitLogin" :disabled="loginForm.submitting">
+               <i :class="loginForm.submitting ? 'fas fa-spinner' : 'fas fa-check'" ></i>&nbsp;&nbsp;
                @lang('auth.loginBtn')
             </b-button>
          </div>
@@ -42,8 +42,8 @@
             <sc-form-group id="fpLogin" label="@lang('auth.usernameOrEmail')" v-model="forgetPasswordForm.fpLogin" :error="forgetPasswordForm.errors" :required="true"></sc-form-group>
          </div>
          <template slot="modal-footer">
-            <button type="button" class="btn btn-primary" @click.prevent="submitForgetPassword()" :disabled="forgetPasswordForm.submiting">
-               <i :class="forgetPasswordForm.submiting ? 'fas fa-spinner' : 'fa fa-check'"></i> @lang('auth.resetPassword')
+            <button type="button" class="btn btn-primary" @click.prevent="submitForgetPassword()" :disabled="forgetPasswordForm.submitting">
+               <i :class="forgetPasswordForm.submitting ? 'fas fa-spinner' : 'fa fa-check'"></i> @lang('auth.resetPassword')
             </button>
             <button type="button" class="btn btn-default" data-dismiss="modal" @click.prevent="forgetPasswordForm.fpLogin = ''; $refs.forgetPasswordModal.hide()">
                <i class="fa fa-reply"></i> @lang('generic.cancel')

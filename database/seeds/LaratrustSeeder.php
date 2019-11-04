@@ -2,16 +2,16 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use SC\Models\System\Store;
 
-class LaratrustSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     *
-     * @return  void
-     */
-    public function run()
-    {
+class LaratrustSeeder extends Seeder {
+    protected $store;
+
+    function __construct() {
+        $this->store = Store::first();
+    }
+
+    public function run() {
         $this->command->info('Truncating User, Role and Permission tables');
         $this->truncateLaratrustTables();
 
@@ -55,6 +55,7 @@ class LaratrustSeeder extends Seeder
             $this->command->info("Creating '{$key}' user");
             // Create default user for each role
             $user = \SC\Models\Users\User::create([
+                'storeID' => $this->store->id,
                 'firstName' => ucwords(str_replace("_", " ", $key)),
                 'lastName' => ucwords(str_replace("_", " ", $key)),
                 'userName' => $key,
@@ -73,6 +74,7 @@ class LaratrustSeeder extends Seeder
                     $permissions = explode(',', $value);
                     // Create default user for each permission set
                     $user = \SC\Models\Users\User::create([
+                        'storeID' => $this->store->id,
                         'firstName' => ucwords(str_replace("_", " ", $key)),
                         'lastName' => ucwords(str_replace("_", " ", $key)),
                         'userName' => $key,

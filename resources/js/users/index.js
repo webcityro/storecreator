@@ -1,4 +1,9 @@
+import { mapActions, mapGetters } from 'vuex';
+import User from '../core/User';
+
 new Vue({
+   store,
+
    el: '#usersApp',
 
    data: {
@@ -12,7 +17,8 @@ new Vue({
          password: '',
          passwordType: this.userRow ? 'dontChange' : 'set',
          status: '',
-         roles: []
+         roles: [],
+         stores: []
       }),
       passwordOptions: [
          { text: trans('formLabels.passwordSet'), value: 'set' },
@@ -20,12 +26,13 @@ new Vue({
       ]
    },
 
-   created() {
-
+   mounted() {
+      // console.log('this.auth', this.auth.data.id);
    },
 
    methods: {
       edit(row) {
+         console.log(row);
          this.userRow = row;
          this.form.firstName = row.item.firstName;
          this.form.lastName = row.item.lastName;
@@ -42,6 +49,12 @@ new Vue({
 
          for (let role of row.item.roles) {
             this.form.roles.push(role.id);
+         }
+
+         this.form.stores = [];
+
+         for (let store of row.item.stores) {
+            this.form.stores.push(store.id);
          }
 
          this.$refs.userFormModal.show();
@@ -108,7 +121,6 @@ new Vue({
                   rules: {
                      required: true,
                      lengthRange: [2, 191],
-                     maxLength: 191,
                      alpha: true
                   }
                }, {
@@ -122,6 +134,9 @@ new Vue({
                      }, {
                         field: 'roles',
                         label: trans('role.title')
+                     }, {
+                        field: 'stores',
+                        label: trans('generic.stores')
                      }
                   ],
                   rules: {
@@ -167,6 +182,11 @@ new Vue({
    },
 
    computed: {
+      ...mapGetters({
+         authChech: 'auth/check',
+         auth: 'auth/user'
+      }),
+
       userFormTitle() {
          return this.userRow ? trans('user.editFormTitle', { user: this.userRow.item.displayName }) : trans('user.newAccountTitle');
       },

@@ -3,6 +3,7 @@ class User {
       this.data = auth.data;
       this.roles = auth.roles;
       this.permissions = auth.permissions;
+      this.stores = auth.stores;
    }
 
    hasRole(role) {

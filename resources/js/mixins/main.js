@@ -13,6 +13,21 @@ export default {
 
          const newDate = new Date(date);
          return newDate.getDay()+'.'+newDate.getMonth()+'.'+newDate.getFullYear()+' - '+newDate.getHours()+':'+newDate.getMinutes();
+      },
+
+      deep(path) {
+         let current = this.$data || this.$data();
+
+         path.split('.').forEach(key => current = current[key]);
+         return current;
+      },
+
+      showFormModal(group) {
+         Event.emit('scFormModal'+group, true);
+      },
+
+      hideFormModal(group) {
+         Event.emit('scFormModal'+group, false);
       }
    },
 

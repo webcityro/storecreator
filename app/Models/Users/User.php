@@ -13,6 +13,7 @@ class User extends Authenticatable {
     use LaratrustUserTrait;
 
     protected $fillable = [
+        'storeID',
         'userName',
         'firstName',
         'lastName',
@@ -39,5 +40,17 @@ class User extends Authenticatable {
 
     public function sendPasswordResetNotification($token) {
         $this->notify(new ForgetPasswordNotification($token, $this->getUsername()));
+    }
+
+    public function stores() {
+        return $this->morphToMany('SC\Models\System\Store', 'storeable');
+    }
+
+    public function store() {
+        return $this->stores()->where('id', $this->storeID)->first();
+    }
+
+    public function savedStates() {
+        return $this->hasMany('SC\Models\System\SavedState', 'userID')->where('storeID', $this->storeID);
     }
 }

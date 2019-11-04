@@ -89,8 +89,8 @@
                </div>
             </div>
             <template slot="modal-footer">
-               <button type="button" class="btn btn-primary" @click.prevent="permissionRow ? update() : add()" :disabled="form.submiting">
-                  <i :class="form.submiting ? 'fas fa-spinner' : 'fa fa-save'"></i> @lang('generic.save')
+               <button type="button" class="btn btn-primary" @click.prevent="permissionRow ? update() : add()" :disabled="form.submitting">
+                  <i :class="form.submitting ? 'fas fa-spinner' : 'fa fa-save'"></i> @lang('generic.save')
                </button>
                <button type="button" class="btn btn-default" data-dismiss="modal" @click.prevent="cancelForm">
                   <i class="fa fa-reply"></i> @lang('generic.cancel')
